@@ -1,0 +1,260 @@
+<h2 mat-dialog-title>Reservation Form Details</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="reservationForm">
+    <!--stay date-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Date of Arrival</mat-label>
+              <input formControlName="arrivalDate" matInput [matDatepicker]="arrDate">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-error *ngIf="getControls['arrivalDate'].errors?.['required']">{{getRequiredError('Date of Arrival')}} </mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="arrDate"></mat-datepicker-toggle>
+              <mat-datepicker #arrDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Date of Departure</mat-label>
+              <input formControlName="departureDate" matInput [matDatepicker]="depDate">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-error *ngIf="getControls['departureDate'].errors?.['required']">{{getRequiredError('Date of Departure')}} </mat-error>
+              <mat-datepicker-toggle matIconSuffix [for]="depDate"></mat-datepicker-toggle>
+              <mat-datepicker #depDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--room details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Room Size</mat-label>
+              <mat-select formControlName="roomSize">
+                <mat-option value="">Select</mat-option>
+                <mat-option *ngFor="let item of roomSize" [value]="item.value">{{item.label}}</mat-option>
+              </mat-select>
+              <mat-hint>Choose a room type</mat-hint>
+              <mat-error *ngIf="getControls['roomSize'].errors?.['required']">{{getRequiredError('Room Size')}} </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Room Quantity</mat-label>
+              <input formControlName="roomQuantity" matInput type="number">
+              <mat-hint>Maximum:5</mat-hint>
+              <mat-error *ngIf="getControls['roomQuantity'].errors?.['required']">{{getRequiredError('Room Quantity')}} </mat-error>
+              <mat-error *ngIf="getControls['roomQuantity'].errors?.['max']">Maximum value 5 only! </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--personal details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="fill">
+              <mat-label>First Name</mat-label>
+              <input formControlName="firstName" matInput>
+              <mat-hint class="mat-hint-right">{{getFirstNameLength()}}/25</mat-hint>
+              <mat-error *ngIf="getControls['firstName'].errors?.['required']">{{getRequiredError('First Name')}} </mat-error>
+              <mat-error *ngIf="getControls['firstName'].errors?.['maxlength']">Maximum length is 25 characters only! </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Last Name</mat-label>
+              <input formControlName="lastName" matInput>
+              <mat-hint class="mat-hint-right">{{getLastNameLength()}}/25</mat-hint>
+              <mat-error *ngIf="getControls['lastName'].errors?.['maxlength']">Maximum length is 25 characters only! </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="fill">
+              <mat-label>E-mail</mat-label>
+              <input formControlName="email" matInput type="email">
+              <mat-error *ngIf="getControls['email'].errors?.['required']">{{getRequiredError('E-mail')}} </mat-error>
+              <mat-error *ngIf="getControls['email'].errors?.['email']">Please give in proper email format! </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="fill">
+              <mat-label>Phone Number</mat-label>
+              <input formControlName="phone" matInput type="email">
+              <mat-hint>Add your country code first</mat-hint>
+              <mat-error *ngIf="getControls['phone'].errors?.['required']">{{getRequiredError('Phone Number')}} </mat-error>
+              <mat-error *ngIf="getControls['phone'].errors?.['pattern']">Add your country code first </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--street details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Street Name</mat-label>
+              <input formControlName="streetName" matInput>
+              <mat-error *ngIf="getControls['streetName'].errors?.['required']">{{getRequiredError('Street Name')}} </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>Street Number</mat-label>
+              <input formControlName="streetNumber" matInput type="number">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--address details-->
+    <div class="row">
+      <div class="col-9">
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>ZIP</mat-label>
+              <input formControlName="zipCode" matInput type="number">
+              <mat-error *ngIf="getControls['zipCode'].errors?.['required']">{{getRequiredError('ZIP')}} </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field  class="example-full-width" appearance="fill">
+              <mat-label>State</mat-label>
+              <input formControlName="state" type="text" placeholder="Search" matInput [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let option of stateList" [value]="option.key">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-hint>Autocomplete</mat-hint>
+              <mat-error *ngIf="getControls['state'].errors?.['required']">{{getRequiredError('State')}} </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>City</mat-label>
+              <input formControlName="city" matInput>
+              <mat-error *ngIf="getControls['city'].errors?.['required']">{{getRequiredError('City')}} </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Extra details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field  appearance="fill">
+              <mat-label>Extras</mat-label>
+              <mat-select formControlName="extras" multiple>
+                <mat-option *ngFor="let item of extraList" [value]="item">{{item}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Payment details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-12">
+            <mat-radio-group formControlName="payment">
+              <mat-radio-button value="creditcard">Credit Card</mat-radio-button>
+              <mat-radio-button value="paypal">Paypal</mat-radio-button>
+              <mat-radio-button value="cash">Cash</mat-radio-button>
+              <mat-radio-button value="bitcoin">Bitcoin</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Note details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field  appearance="fill">
+              <mat-label>Personal Note</mat-label>
+              <textarea formControlName="note" matInput></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Tags details-->
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col">
+            <mat-form-field [class.disabled-tags]="getViewOnly()" appearance="fill">
+              <mat-label>Tags</mat-label>
+              <mat-chip-grid #chipGrid>
+                <mat-chip-row *ngFor="let tag of selectedTagsArr" (removed)="removeTag(tag)">
+                  {{tag}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <input placeholder="Select new tag..." #tag formControlName="tags" [matChipInputFor]="chipGrid" formControlName="tags"
+                [matAutocomplete]="tagList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addTag($event)" />
+              <mat-autocomplete #tagList="matAutocomplete" (optionSelected)="selectedTags($event)">
+                <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                  {{tag}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--other details-->
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <mat-slide-toggle formControlName="reminder" [checked]="true">
+              Send me a reminder
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <mat-slide-toggle formControlName="newsletter" [checked]="true">
+              Subscribe to newletter
+            </mat-slide-toggle>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-checkbox formControlName="confirm">I confirm the information given
+              below</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>{{getViewOnly() ? 'Okay': 'Cancel'}}</button>
+  <button mat-raised-button color="primary" *ngIf="!getViewOnly()" (click)="onSubmit()" cdkFocusInitial>{{getCreateOnly() ? 'Submit':'Update'}}</button>
+</mat-dialog-actions>

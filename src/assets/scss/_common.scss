@@ -1,0 +1,13 @@
+@import './variables';
+
+mat-form-field{
+  width: 100%;
+  margin-bottom: 15px;
+}
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+}
+.mat-hint-right{
+  position: absolute;
+  right: 0px;
+}
