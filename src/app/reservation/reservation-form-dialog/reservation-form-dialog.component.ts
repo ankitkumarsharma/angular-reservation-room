@@ -68,30 +68,77 @@ export class ReservationFormDialogComponent implements OnInit {
       return this.reservationForm.controls;
     }
     setValueInreservationForm(){
+      console.log(this.reservationForm.value)
       let data = this.data.updatedData;
-      this.reservationForm.setValue({
-        arrivalDate:data.stay.arrivalDate,
-        departureDate:data.stay.departureDate,
-        roomSize:data.room.roomSize,
-        roomQuantity:data.room.roomQuantity,
-        firstName:data.firstName,
-        lastName:data.lastName,
-        email:data.email,
-        phone:data.phone,
-        streetName:data.addressStreet.streetName,
-        streetNumber:data.addressStreet.streetNumber,
-        zipCode:data.addressLocation.zipCode,
-        state:data.addressLocation.state,
-        city:data.addressLocation.city,
-        extras:data.extras,
-        payment:data.payment,
-        note:data.note,
-        tags:data.tags,
-        reminder:data.reminder,
-        newsletter:data.newsletter,
-        confirm:data.confirm,
-      });
+      let objDataForDisplay = this.createDataObject(data);
+      console.log(objDataForDisplay);
+      let createDataObjectForSetValue = this.createDataObjectForSetValue(data);
+      console.log(createDataObjectForSetValue);
+      this.reservationForm.setValue(createDataObjectForSetValue);
       this.selectedTagsArr = data.tags;
+    }
+
+    createDataObject(data:any){
+      let updateObj:any;
+      Object.keys(this.reservationForm.value).map((itemParent)=>{
+        Object.keys(data).map((itemChild)=>{
+          if(itemChild == 'addressLocation'){
+            let addressLocation:any;
+            Object.keys(data.addressLocation).map((addressLocationChild)=>{
+              addressLocation = {...addressLocation, [addressLocationChild]: data.addressLocation[addressLocationChild]};
+              updateObj = {...updateObj, addressLocation: addressLocation}
+            })
+          } else if(itemChild == 'addressStreet'){
+            let addressStreet:any;
+            Object.keys(data.addressStreet).map((addressStreetChild)=>{
+              addressStreet = {...addressStreet, [addressStreetChild]: data.addressStreet[addressStreetChild]};
+              updateObj = {...updateObj, addressStreet: addressStreet}
+            })
+          } else if(itemChild == 'room'){
+            let room:any;
+            Object.keys(data.room).map((roomChild)=>{
+              room = {...room, [roomChild]: data.room[roomChild]};
+              updateObj = {...updateObj, room: room}
+            })
+          } else if(itemChild == 'stay'){
+            let stay:any;
+            Object.keys(data.stay).map((stayChild)=>{
+              stay = {...stay, [stayChild]: data.stay[stayChild]};
+              updateObj = {...updateObj, stay: stay}
+            })
+          } else if(itemParent == itemChild){
+            updateObj = {...updateObj,[itemParent]: data[itemParent]}
+          }
+        })
+      });
+      return updateObj;
+    }
+    createDataObjectForSetValue(data:any){
+      let updateObj:any;
+      Object.keys(this.reservationForm.value).map((itemParent)=>{
+        Object.keys(data).map((itemChild)=>{
+          if(itemChild == 'addressLocation'){
+            Object.keys(data.addressLocation).map((addressLocationChild)=>{
+              updateObj = {...updateObj, [addressLocationChild]: data.addressLocation[addressLocationChild]}
+            })
+          } else if(itemChild == 'addressStreet'){
+            Object.keys(data.addressStreet).map((addressStreetChild)=>{
+              updateObj = {...updateObj, [addressStreetChild]: data.addressStreet[addressStreetChild]}
+            })
+          } else if(itemChild == 'room'){
+            Object.keys(data.room).map((roomChild)=>{
+              updateObj = {...updateObj, [roomChild]: data.room[roomChild]}
+            })
+          } else if(itemChild == 'stay'){
+            Object.keys(data.stay).map((stayChild)=>{
+              updateObj = {...updateObj, [stayChild]: data.stay[stayChild]}
+            })
+          } else if(itemParent == itemChild){
+            updateObj = {...updateObj,[itemParent]: data[itemParent]}
+          }
+        })
+      });
+      return updateObj;
     }
 
     reservationFormCreate(){
